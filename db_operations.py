@@ -1,5 +1,5 @@
 
-# Função para criar a tabela no banco de dados (caso não exista)
+# Criação da tabela no banco de dados (caso não exista)
 def create_table(conn):
     
     try:
@@ -32,7 +32,7 @@ def create_table(conn):
         print(f"Erro ao criar tabelas: {e}")
 
 
-    # Função para inserir os dados do DataFrame no banco de dados
+# Inserir os dados do DataFrame no banco de dados
 def insert_data(conn, df):
     """Inserir os dados do DataFrame no banco de dados"""
     try:
@@ -50,54 +50,52 @@ def insert_data(conn, df):
         """
         
         # Filtrar os registros que são grupos (onde 'Unid.Medida' é None ou NULL)
-        grupos_df = df[df['Unid.Medida'].isna() | (df['Unid.Medida'] == '')]
+        grupos_dataframe = df[df['Unid.Medida'].isna() | (df['Unid.Medida'] == '')]
         
-        # Filtrar os registros que são produtos (onde 'Unid.Medida' não é None nem vazio)
+        # Filtrar os registros que são produtos (onde 'Unid.Medida' não é None nem null)
         produtos_df = df[~df['Unid.Medida'].isna() & (df['Unid.Medida'] != '')]
         
         # Inserir os grupos na tabela grupo
-        for index, row in grupos_df.iterrows():
+        for index, row in grupos_dataframe.iterrows():
             grupo_codigo = str(row['Código']).strip()  # Código do grupo
             grupo_nome = row['Denominação']  # Usando 'Denominação' como o nome do grupo
             
-            # Verificar se o código do grupo não é vazio ou None
+            # Verifica se o código do grupo não é vazio ou None
             if grupo_codigo and grupo_nome:
-                # Verificar se o grupo já existe no banco de dados
+
                 cursor.execute("SELECT id FROM grupo WHERE codigo_grupo = %s", (grupo_codigo,))
                 grupo_id = cursor.fetchone()
                 
-                # Se o grupo não existir, insira o grupo na tabela
+               
                 if not grupo_id:
                     cursor.execute(insert_grupo_query, (grupo_codigo, grupo_nome))
-                    grupo_id = cursor.lastrowid  # Obter o ID do grupo recém inserido
+                    grupo_id = cursor.lastrowid  
                 else:
-                    grupo_id = grupo_id[0]  # Caso o grupo já exista, use o ID do grupo
+                    grupo_id = grupo_id[0]  
             else:
                 print(f"Grupo com código '{grupo_codigo}' ou nome '{grupo_nome}' inválido. Não inserido.")
         
-        # Agora inserimos os produtos associando-os aos grupos:
+        # Insere os produtos associando-os aos grupos:
         for index, row in produtos_df.iterrows():
-            produto_codigo = str(row['Código']).strip()  # Código do produto
+            produto_codigo = str(row['Código']).strip()  
             produto_denominacao = row['Denominação']
             produto_unidade = row['Unid.Medida']
             
-            # Extrair os 4 primeiros dígitos do código do produto para determinar o grupo
-            grupo_codigo = produto_codigo[:4].strip()  # Pega os 4 primeiros dígitos do código do produto, sem espaços
+            grupo_codigo = produto_codigo[:4].strip()  
             
-            # Verificar se o grupo existe no banco de dados
             cursor.execute("SELECT id FROM grupo WHERE codigo_grupo = %s", (grupo_codigo,))
             grupo_id = cursor.fetchone()
             
-            # Se o grupo não existir, não inserimos o produto
+
             if grupo_id:
-                grupo_id = grupo_id[0]  # Recupera o ID do grupo correspondente
-                # Inserir o produto na tabela
+                grupo_id = grupo_id[0]  
+
                 dados_produto = (produto_codigo, produto_denominacao, produto_unidade, grupo_id)
                 cursor.execute(insert_produto_query, dados_produto)
             else:
                 print(f"Grupo {grupo_codigo} não encontrado para o produto {produto_codigo}. Produto não inserido.")
         
-        # Commit para salvar as alterações no banco
+       
         conn.commit()
         print("Dados inseridos com sucesso!")
 

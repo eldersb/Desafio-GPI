@@ -3,7 +3,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-# Função para conectar ao banco de dados MySQL
+# Conexão ao banco de dados 
 def connect_db():
     """Função para estabelecer a conexão com o banco de dados MySQL"""
     try:
