@@ -21,6 +21,7 @@ Desafio Técnico: Extração e Modelagem de Dados de Almoxarifado
 
 > [!NOTE]  
 > Link de instalação Python - https://www.python.org/downloads/
+> [!NOTE]  
 > Link de instalação Vs Code - https://code.visualstudio.com/
 
 * Crie um banco de dados em seu Sistema de Gerenciamento de Banco de Dados(SGBDR) com o seguinte script:
