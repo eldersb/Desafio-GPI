@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ac0105c8-7e57-43c8-a4d7-36f60299bef8)# Desafio-GPI
+# Desafio-GPI
 
 Desafio Técnico: Extração e Modelagem de Dados de Almoxarifado
 
