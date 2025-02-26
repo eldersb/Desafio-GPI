@@ -14,7 +14,8 @@ Arquivo PDF: https://files.cercomp.ufg.br/weby/up/355/o/Lista_de_estoque_DMP.pdf
 * Crie um banco de dados em seu Sistema de Gerenciamento de Banco de Dados(SGBDR) com o seguinte script:
 
   ```
-CREATE DATABASE almoxarifado;
+  
+  CREATE DATABASE almoxarifado;
   ```
 
 * O próprio código irá baixar o arquivo PDF e executar os seguintes scripts para criação do banco de dados:
