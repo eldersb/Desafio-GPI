@@ -84,3 +84,12 @@ INSERT INTO produtos (codigo, denominacao, unidade_medida, grupo_id)
   ```
   print(data_stock)
   ```
+
+* Após a execução, confira no banco de dados a criação e inserção dos registros na tabela:
+
+### Tabela GRUPO
+  ![image](https://github.com/user-attachments/assets/422d8ba2-7f86-4777-8162-ffe9a5c6b789)
+
+### Tabela PRODUTOS
+  ![image](https://github.com/user-attachments/assets/b9f7ad27-ff53-4b5b-a36f-c5999717d444)
+
