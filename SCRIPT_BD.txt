@@ -1,0 +1,12 @@
+CREATE TABLE Grupo (
+    GrupoID INT AUTO_INCREMENT PRIMARY KEY,   -- Chave Primária (auto-incremento)
+    NomeGrupo VARCHAR(255) NOT NULL           -- Nome do Grupo
+);
+
+CREATE TABLE Produto (
+    Codigo VARCHAR(50) PRIMARY KEY,          -- Código único do Produto
+    Denominacao VARCHAR(255) NOT NULL,      -- Nome ou descrição do Produto
+    UnidadeMedida VARCHAR(50) NOT NULL,     -- Unidade de Medida do Produto
+    GrupoID INT,                            -- Chave Estrangeira referenciando a tabela Grupo
+    FOREIGN KEY (GrupoID) REFERENCES Grupo(GrupoID)  -- Definindo a chave estrangeira
+);

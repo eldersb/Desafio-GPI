@@ -55,3 +55,79 @@ os.remove(caminho_local_pdf)
 
 # Mostrar os dados extraídos
 print(dados_estoque)
+
+
+------------ VERSION 2 ----------
+
+import pdfplumber
+import requests
+import os
+import pandas as pd  
+
+def download_pdf(url, path_destination):
+    """Baixar o PDF da URL e salvar localmente"""
+    response = requests.get(url)
+    with open(path_destination, 'wb') as f:
+        f.write(response.content)
+
+def extract_dados_pdf(pdf_path):
+    """Extrair dados do PDF e organizar em um DataFrame"""
+    all_data = []
+    column_names = None  # Variável para armazenar os nomes das colunas
+
+    with pdfplumber.open(pdf_path) as pdf:
+        for page_number, page in enumerate(pdf.pages):
+            table = page.extract_table()
+
+            if table:
+                # Se os nomes das colunas ainda não foram capturados, capturamos da primeira página
+                if column_names is None:
+                    column_names = table[0]  # Primeira linha será a coluna
+                    table = table[1:]  # Remover a linha de cabeçalho da primeira página
+                else:
+                    # Remover a linha de cabeçalho das páginas subsequentes
+                    table = table
+
+                # Converte a tabela extraída para DataFrame
+                df = pd.DataFrame(table, columns=column_names)
+                
+                # Remover espaços extras dos nomes das colunas
+                df.columns = df.columns.str.strip()
+
+                # Vamos criar uma coluna extra para o "Código do Grupo"
+                group_code = None
+
+                # Iterar sobre as linhas e preencher o código do grupo onde necessário
+                for index, row in df.iterrows():
+                    if pd.isna(row['Código']) or row['Código'] == '':
+                        df.at[index, 'Código'] = group_code
+                    else:
+                        group_code = row['Código']
+
+                # Adicionar os dados da página atual à lista de todos os dados
+                all_data.append(df)
+
+    # Concatenar todos os DataFrames das páginas em um único DataFrame
+    final_df = pd.concat(all_data, ignore_index=True)
+
+    # Exibir as primeiras linhas para verificar como está
+    print(final_df.head())
+    
+    return final_df
+
+# URL do PDF
+url_pdf = "https://files.cercomp.ufg.br/weby/up/355/o/Lista_de_estoque_DMP.pdf"
+# Caminho local onde o PDF será salvo
+caminho_local_pdf = "Lista_de_estoque_DMP.pdf"
+
+# Baixar o PDF da URL
+download_pdf(url_pdf, caminho_local_pdf)
+
+# Extrair os dados do PDF
+dados_estoque = extract_dados_pdf(caminho_local_pdf)
+
+# Excluir o arquivo local após o uso
+os.remove(caminho_local_pdf)
+
+# Mostrar os dados extraídos
+print(dados_estoque)
