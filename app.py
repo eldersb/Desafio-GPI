@@ -22,5 +22,5 @@ if conn:
 # Excluir o arquivo local após o uso
 os.remove(localpath_pdf)
 
-# Mostrar os dados extraídos do PDF como está no dataframe (opcional)
+# Mostrar os dados extraídos do PDF no console (opcional)
 # print(data_stock)

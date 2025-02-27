@@ -29,15 +29,15 @@ def extract_dados_pdf(pdf_path):
                 table = page.extract_table()
 
                 if table:
-                    # Se ainda não capturamos os nomes das colunas, pegamos da primeira tabela
+                    # Se ainda não capturou os nomes das colunas, pega da primeira tabela
                     if column_names is None:
                         column_names = table[0]  # Primeira linha contém os nomes das colunas
-                        table = table[1:]  # Removemos a linha de cabeçalho
+                        table = table[1:]  # Remove a linha de cabeçalho
 
-                    # Criamos o DataFrame
+                    # Cria o DataFrame
                     df = pd.DataFrame(table, columns=column_names)
 
-                    # Removemos espaços extras nos nomes das colunas
+                    # Remove espaços extras nos nomes das colunas
                     df.columns = df.columns.str.strip()
 
                     # Adicionar ao conjunto de dados
@@ -52,7 +52,6 @@ def extract_dados_pdf(pdf_path):
         # Ajustar os códigos dos grupos corretamente
         for index, row in final_df.iterrows():
             if pd.isna(row["Unid.Medida"]) or row["Unid.Medida"] == "":
-                # Linha é um grupo, precisamos pegar os 4 primeiros dígitos do próximo produto
                 next_row = final_df.iloc[index + 1] if index + 1 < len(final_df) else None
                 if next_row is not None and isinstance(next_row["Código"], str):
                     final_df.at[index, "Código"] = next_row["Código"][:4]  # Prefixo do grupo
