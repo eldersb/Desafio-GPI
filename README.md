@@ -10,7 +10,7 @@ Desafio Técnico: Extração e Modelagem de Dados de Almoxarifado
 
 ## Modelagem do Banco
 
-![image](https://github.com/user-attachments/assets/ee60b44a-ef2f-4a8a-aae6-232cf17bd86b)
+![image](https://github.com/user-attachments/assets/41981e10-d80c-4619-bca1-68f880c6e405)
 
 
 ## Passo a Passo de Execução do Projeto
@@ -21,13 +21,10 @@ Desafio Técnico: Extração e Modelagem de Dados de Almoxarifado
 
 > [!NOTE]  
 > Link de instalação Python - https://www.python.org/downloads/
->  
-> Link de instalação Vs Code - https://code.visualstudio.com/
 
 * Crie um banco de dados em seu Sistema de Gerenciamento de Banco de Dados(SGBDR) com o seguinte script:
 
   ```
-  
   CREATE DATABASE almoxarifado;
   ```
 
